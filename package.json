@@ -4,22 +4,9 @@
   "private": true,
   "scripts": {
     "build": "ng build"
-    
   },
   "dependencies": {
-    "@angular/common": "4.1.0",
-    "@angular/core": "4.1.0",
-    "@angular/forms": "4.1.0",
-    "@angular/http": "4.1.0",
-    "@angular/platform-browser": "4.1.0",
-    "@angular/router": "4.1.0",
-    "rxjs": "5.2.0",
-    "typescript": "2.8.0-dev.20180222"
+    "express": "3.3.5"
   },
-  "devDependencies": {
-    "@angular/compiler": "4.1.0",
-    "@angular/compiler-cli": "4.1.0",
-    "grunt": "1.0.1"
-  }
-  
+  "devDependencies": {}
 }

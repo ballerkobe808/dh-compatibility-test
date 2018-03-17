@@ -1,0 +1,6 @@
+.DS_Store
+.idea
+._.DS_Store
+.tscache
+node_modules
+npm-debug.log
