@@ -9,6 +9,8 @@
   <!-- <div> -->
   <div (click)="addSwal.show()" class="href" style='margin-left: 100px; display: inline'><i class="fa fa-plus"></i>&nbsp;Add Team Member</div>
 
+  
+
   <!-- modal to add a new member -->
   <swal #addSwal title="Add Team Member" [showCancelButton]="true" (beforeOpen)="onBeforeAdd()" (confirm)="saveMember(true)">
     <div *swalPartial class="user-modal">
@@ -258,7 +260,7 @@
       </table>
     </div>
   </div>
-
+  <span class="href" (click)="downloadJson();">Download the Applicant List as JSON</span>
   <!-- Applicant section End------------------------------------------------------ -->
 </div>
 

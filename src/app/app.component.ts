@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import * as _ from 'lodash';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent {
   currentMember: any;
   modalTitle = 'Add Team Member'
 
+  jsonLink: string = '';
 
 
   // current team seed data
@@ -133,6 +135,7 @@ export class AppComponent {
     for (const applicant of this.applicants) {
       applicant.compatibility = this.getCompatibility(applicant, this.team)
     }
+
   }
 
   /**
@@ -170,6 +173,8 @@ export class AppComponent {
     } else {
       return (1 - (totalDifference / 40)).toFixed(2);
     }
+
+
   }
 
 
@@ -180,5 +185,27 @@ export class AppComponent {
   }
 
 
+  generateJson() {
+    var theJSON = JSON.stringify(this.team);
+    var uri = "data:application/json;charset=UTF-8," + encodeURIComponent(theJSON);
 
+    this.jsonLink = uri;
+    // var a = document.createElement('a');
+    // a.href = uri;
+    // a.innerHTML = "Right-click and choose 'save as...'";
+    // document.body.appendChild(a);
+
+  }
+
+
+  /**
+   * Save the results from the server as a txt file
+   */
+  downloadJson() {
+    var theJSON = JSON.stringify(this.applicants);
+
+    // var blob = new Blob([jsonContent], { type: 'text/csv' });
+    var blob = new Blob([theJSON], { type: 'text/csv' });
+    saveAs(blob, "applicants.txt");
+  }
 }
