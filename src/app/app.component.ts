@@ -34,7 +34,6 @@ export class AppComponent {
   // current applicants seed data
   applicants = [
     { id: '4', name: 'Daniel', intelligence: 10, strength: 10, endurance: 10, spicyFoodTolerance: 10, compatibility: '0.72' },
-    // { id: '5', name: 'Samus Metroid', intelligence: 5, strength: 7, endurance: 4, spicyFoodTolerance: 3, compatibility: '' },
   ]
 
 
@@ -184,18 +183,6 @@ export class AppComponent {
     return isNaN(parseFloat(average)) ? '' : average;
   }
 
-
-  generateJson() {
-    var theJSON = JSON.stringify(this.team);
-    var uri = "data:application/json;charset=UTF-8," + encodeURIComponent(theJSON);
-
-    this.jsonLink = uri;
-    // var a = document.createElement('a');
-    // a.href = uri;
-    // a.innerHTML = "Right-click and choose 'save as...'";
-    // document.body.appendChild(a);
-
-  }
 
 
   /**
