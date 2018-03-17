@@ -49,6 +49,9 @@ export class AppComponent {
     this.addSpicyFoodTolerance = member.spicyFoodTolerance
   }
 
+  /**
+   * Set default user to add
+   */
   onBeforeAdd() {
     this.addId = '';
     this.addName = ''
@@ -76,6 +79,7 @@ export class AppComponent {
       });
     }
 
+    this.calculateCompatibility();
   }
 
 
@@ -115,13 +119,21 @@ export class AppComponent {
       }
     }
 
+
+    this.calculateCompatibility();
+  }
+
+
+  /**
+   * Calculate the compatibility of all the applicants. This happens when any team member is
+   * updated/added/deleted
+   */
+  calculateCompatibility() {
     // recalculate the compatibility of the applicants
     for (const applicant of this.applicants) {
       applicant.compatibility = this.getCompatibility(applicant, this.team)
     }
   }
-
-
 
   /**
    * Generate a unique 36 digit id
@@ -152,22 +164,21 @@ export class AppComponent {
       Math.abs(member.endurance - endurance) +
       Math.abs(member.spicyFoodTolerance - spicyFoodTolerance);
 
-      // zero division causes errors
-      if (totalDifference == 0) {
-        return '1.00';
-      }
-      else {
-        return  (1- (totalDifference / 40)).toFixed(2);
-      }
+    // zero division causes errors
+    if (totalDifference == 0) {
+      return '1.00';
+    } else {
+      return (1 - (totalDifference / 40)).toFixed(2);
+    }
   }
 
 
   getAttributeAverage(attribute) {
     let attributeTotal = _.sumBy(this.team, attribute)
-    return (attributeTotal/this.team.length).toFixed(2);
-   
+    let average = (attributeTotal / this.team.length).toFixed(2);
+    return isNaN(parseFloat(average)) ? '' : average;
   }
- 
+
 
 
 }
