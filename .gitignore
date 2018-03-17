@@ -4,3 +4,4 @@
 .tscache
 node_modules
 npm-debug.log
+.editorconfig

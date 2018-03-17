@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+th {
+  text-align: center;
+}
+
+.table td, .table th {
+  padding: 7px;
+}
+
+
+/*mimic the look of an href*/
+.href {
+  color: #1E90FF !important;
+}
+
+.href:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* .user-modal label {
+  width: 200px;
+  text-align: right;
+}
+
+*/
+
+.user-modal input {
+  margin-bottom: 10px;
+} 

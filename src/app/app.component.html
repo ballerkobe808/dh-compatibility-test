@@ -1,0 +1,264 @@
+<div class="container" style="padding-top: 20px;">
+
+<h1>Datahouse Team Compatibility Checker</h1>
+
+<hr>
+<!-- <div style="height: 30px;"></div> -->
+  <!-- Current Team Member Section ------------------------------------------------------ -->
+  <h3 style="display: inline-block;">Current Team Members</h3>
+  <!-- <div> -->
+  <div (click)="addSwal.show()" class="href" style='margin-left: 100px; display: inline'><i class="fa fa-plus"></i>&nbsp;Add Team Member</div>
+
+  <!-- modal to add a new member -->
+  <swal #addSwal title="Add Team Member" [showCancelButton]="true" (beforeOpen)="onBeforeAdd()" (confirm)="saveMember(true)">
+    <div *swalPartial class="user-modal">
+      <div class="row">
+        <div class="col-sm-12">
+          <label>Name</label>
+          <input type="text" [(ngModel)]="addName" class="form-control">
+        </div>
+        <div class="col-sm-6">
+          <label>Intelligence ({{addIntelligence}})</label>
+          <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addIntelligence"></nouislider>
+          <!-- <input type="number" [(ngModel)]="addIntelligence" class="form-control col-sm-8"> -->
+        </div>
+        <div class="col-sm-6">
+          <label>Strength ({{addStrength}})</label>
+          <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addStrength"></nouislider>
+          <!-- <input type="number" [(ngModel)]="addStrength" class="form-control col-sm-8"> -->
+        </div>
+        <div class="col-sm-6">
+          <label>Endurance ({{addEndurance}})</label>
+          <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addEndurance"></nouislider>
+          <!-- <input type="number" [(ngModel)]="addEndurance" class="form-control col-sm-8"> -->
+        </div>
+        <div class="col-sm-6">
+          <label>Spicy Food Tolerance ({{addSpicyFoodTolerance}})</label>
+          <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addSpicyFoodTolerance"></nouislider>
+          <!-- <input type="number" [(ngModel)]="addSpicyFoodTolerance" class="form-control col-sm-5"> -->
+        </div>
+      </div>
+    </div>
+  </swal>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <table class="table table-bordered" style="font-size: 14px !important;">
+        <tr style="background-color: #ccc;">
+          <th>Name</th>
+          <th>Intelligence</th>
+          <th>Strength</th>
+          <th>Endurance</th>
+          <th>Spicy Food Tolerance</th>
+          <th>Actions</th>
+        </tr>
+        <tr *ngFor="let member of team ">
+          <td>
+            {{member.name}}
+          </td>
+          <td class="text-center">
+            {{member.intelligence}}
+          </td>
+          <td class="text-center">
+            {{member.strength}}
+          </td>
+          <td class="text-center">
+            {{member.endurance}}
+          </td>
+          <td class="text-center">
+            {{member.spicyFoodTolerance}}
+          </td>
+
+          <td class="text-center">
+            <div style="width: 200px;">
+              <div href="" (click)="editSwal.show();" class="href" style="margin-right: 20px; display: inline;">
+                <i class="fa fa-edit"></i>&nbsp;Edit</div>
+
+              <div (click)="delSwal.show()" class="href" style=" display: inline;">
+                <i class="fa fa-trash"></i>&nbsp;Delete</div>
+            </div>
+
+            <!-- modal to edit a member -->
+            <swal #editSwal title="Edit Team Member" [showCancelButton]="true" (beforeOpen)="onBeforeEdit(member)" (confirm)="saveMember(true, member.id)">
+              <div *swalPartial class="user-modal">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Name</label>
+                    <input type="text" [(ngModel)]="addName" class="form-control">
+                  </div>
+                  <div class="col-sm-6">
+                    <label>Intelligence ({{addIntelligence}})</label>
+                    <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addIntelligence"></nouislider>
+                    <!-- <input type="number" [(ngModel)]="addIntelligence" class="form-control col-sm-8"> -->
+                  </div>
+                  <div class="col-sm-6">
+                    <label>Strength ({{addStrength}})</label>
+                    <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addStrength"></nouislider>
+                    <!-- <input type="number" [(ngModel)]="addStrength" class="form-control col-sm-8"> -->
+                  </div>
+                  <div class="col-sm-6">
+                    <label>Endurance ({{addEndurance}})</label>
+                    <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addEndurance"></nouislider>
+                    <!-- <input type="number" [(ngModel)]="addEndurance" class="form-control col-sm-8"> -->
+                  </div>
+                  <div class="col-sm-6">
+                    <label>Spicy Food Tolerance ({{addSpicyFoodTolerance}})</label>
+                    <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addSpicyFoodTolerance"></nouislider>
+                    <!-- <input type="number" [(ngModel)]="addSpicyFoodTolerance" class="form-control col-sm-5"> -->
+                  </div>
+                </div>
+              </div>
+            </swal>
+
+            <!-- modal to delete a member -->
+            <swal #delSwal title="Delete Team Member?" text="This will Delete the team member permanently.Do you want to continue?" type="question" [showCancelButton]="true" [focusCancel]="true" (confirm)="deleteMember(true, member)">
+            </swal>
+          </td>
+        </tr>
+        <tr style="background-color: #eee;">
+          <td>
+            Team Average
+          </td>
+          <td class="text-center">
+            {{getAttributeAverage('intelligence')}}
+          </td>
+          <td class="text-center">
+            {{getAttributeAverage('strength')}}
+          </td>
+          <td class="text-center">
+            {{getAttributeAverage('endurance')}}
+          </td>
+          <td class="text-center">
+            {{getAttributeAverage('spicyFoodTolerance')}}
+          </td>
+          <td></td>
+          </tr>
+      </table>
+    </div>
+  </div>
+  <!-- Current Team Member Section End ------------------------------------------------------ -->
+
+  <hr>
+
+  <!-- Applicant section------------------------------------------------------ -->
+  <h3 style="display: inline-block;">Potential Applicants</h3>
+  <div (click)="add2Swal.show()" class="href" style='margin-left: 100px; display: inline;'><i class="fa fa-plus"></i>&nbsp;Add Applicant</div>
+
+  <!-- modal to add a new member -->
+  <swal #add2Swal title="Add Applicant" [showCancelButton]="true" (beforeOpen)="onBeforeAdd()" (confirm)="saveMember(false)">
+    <div *swalPartial class="user-modal">
+      <div class="row">
+        <div class="col-sm-12">
+          <label>Name</label>
+          <input type="text" [(ngModel)]="addName" class="form-control">
+        </div>
+        <div class="col-sm-6">
+          <label>Intelligence ({{addIntelligence}})</label>
+          <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addIntelligence"></nouislider>
+          <!-- <input type="number" [(ngModel)]="addIntelligence" class="form-control col-sm-8"> -->
+        </div>
+        <div class="col-sm-6">
+          <label>Strength ({{addStrength}})</label>
+          <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addStrength"></nouislider>
+          <!-- <input type="number" [(ngModel)]="addStrength" class="form-control col-sm-8"> -->
+        </div>
+        <div class="col-sm-6">
+          <label>Endurance ({{addEndurance}})</label>
+          <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addEndurance"></nouislider>
+          <!-- <input type="number" [(ngModel)]="addEndurance" class="form-control col-sm-8"> -->
+        </div>
+        <div class="col-sm-6">
+          <label>Spicy Food Tolerance ({{addSpicyFoodTolerance}})</label>
+          <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addSpicyFoodTolerance"></nouislider>
+          <!-- <input type="number" [(ngModel)]="addSpicyFoodTolerance" class="form-control col-sm-5"> -->
+        </div>
+      </div>
+    </div>
+  </swal>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <table class="table table-bordered" style="font-size: 14px !important;">
+        <tr style="background-color: #ccc;">
+          <th>Name</th>
+          <th>Intelligence</th>
+          <th>Strength</th>
+          <th>Endurance</th>
+          <th>Spicy Food Tolerance</th>
+          <th>Compatibility Rating</th>
+          <th>Actions</th>
+        </tr>
+        <tr *ngFor="let member of applicants ">
+          <td>
+            {{member.name}}
+          </td>
+          <td class="text-center">
+            {{member.intelligence}}
+          </td>
+          <td class="text-center">
+            {{member.strength}}
+          </td>
+          <td class="text-center">
+            {{member.endurance}}
+          </td>
+          <td class="text-center">
+            {{member.spicyFoodTolerance}}
+          </td>
+          <td class="text-center">
+            {{member.compatibility}}
+          </td>
+
+          <td class="text-center">
+            <div style="width: 200px;">
+              <div href="" (click)="edit2Swal.show();" class="href" style="margin-right: 20px; display: inline;">
+                <i class="fa fa-edit"></i>&nbsp;Edit</div>
+
+              <div (click)="del2Swal.show()" class="href" style=" display: inline;">
+                <i class="fa fa-trash"></i>&nbsp;Delete</div>
+            </div>
+
+
+            <!-- modal to edit a member -->
+            <swal #edit2Swal title="Edit Applicant" [showCancelButton]="true" (beforeOpen)="onBeforeEdit(member)" (confirm)="saveMember(false, member.id)">
+              <div *swalPartial class="user-modal">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Name</label>
+                    <input type="text" [(ngModel)]="addName" class="form-control">
+                  </div>
+                  <div class="col-sm-6">
+                    <label>Intelligence ({{addIntelligence}})</label>
+                    <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addIntelligence"></nouislider>
+                    <!-- <input type="number" [(ngModel)]="addIntelligence" class="form-control col-sm-8"> -->
+                  </div>
+                  <div class="col-sm-6">
+                    <label>Strength ({{addStrength}})</label>
+                    <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addStrength"></nouislider>
+                    <!-- <input type="number" [(ngModel)]="addStrength" class="form-control col-sm-8"> -->
+                  </div>
+                  <div class="col-sm-6">
+                    <label>Endurance ({{addEndurance}})</label>
+                    <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addEndurance"></nouislider>
+                    <!-- <input type="number" [(ngModel)]="addEndurance" class="form-control col-sm-8"> -->
+                  </div>
+                  <div class="col-sm-6">
+                    <label>Spicy Food Tolerance ({{addSpicyFoodTolerance}})</label>
+                    <nouislider [connect]="true" [min]="0" [max]="10" [step]="1" [(ngModel)]="addSpicyFoodTolerance"></nouislider>
+                    <!-- <input type="number" [(ngModel)]="addSpicyFoodTolerance" class="form-control col-sm-5"> -->
+                  </div>
+                </div>
+              </div>
+            </swal>
+
+            <!-- modal to delete a member -->
+            <swal #del2Swal title="Delete Applicant?" text="This will Delete the applicant permanently.Do you want to continue?" type="question" [showCancelButton]="true" [focusCancel]="true" (confirm)="deleteMember(false, member)">
+            </swal>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Applicant section End------------------------------------------------------ -->
+</div>
+
