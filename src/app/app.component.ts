@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 import { saveAs } from 'file-saver';
+import { SwalComponent } from '@toverux/ngx-sweetalert2';
 
 @Component({
   selector: 'app-root',
@@ -12,17 +13,18 @@ export class AppComponent {
 
   // temporary fields to manipulate the user records
   // change this to editId, editName, etc later
-  addId: string = '';
+  addId: string = 'NEW';
   addName: string = '';
   addIntelligence: number = 5;
   addStrength: number = 5;
   addEndurance: number = 5;
   addSpicyFoodTolerance: number = 5;
   currentMember: any;
-  modalTitle = 'Add Team Member'
+  modalTitle: string = ''
 
+  teamFlag: boolean = false;
   jsonLink: string = '';
-
+  @ViewChild('addSwal') addSwal: SwalComponent;
 
   // current team seed data
   team = [
@@ -41,25 +43,48 @@ export class AppComponent {
    * edit this team member
    * @param member 
    */
-  onBeforeEdit(member) {
+  editMember(teamFlag, member) {
+    // grab the member passed and use this in the modal
     this.addId = member.id
     this.addName = member.name
     this.addIntelligence = member.intelligence
     this.addStrength = member.strength
     this.addEndurance = member.endurance
     this.addSpicyFoodTolerance = member.spicyFoodTolerance
+
+    this.teamFlag = teamFlag;
+    this.modalTitle = (teamFlag) ? 'Edit Team Member' : 'Edit Applicant'; 
+
+    // show the modal
+    this.addSwal.show();
+    
+    // the input may not be there right away, so stall to make sure it is
+    setTimeout(function(){ 
+      document.getElementById("addName").focus();
+      }, 200);
   }
 
   /**
    * Set default user to add
    */
-  onBeforeAdd() {
-    this.addId = '';
+  addMember(teamFlag) {
+    // create a new user using these defaults when adding a new user
+    this.addId = 'NEW';
     this.addName = ''
     this.addIntelligence = 5
     this.addStrength = 5
     this.addEndurance = 5
     this.addSpicyFoodTolerance = 5
+
+    this.teamFlag = teamFlag;
+    this.modalTitle = (teamFlag) ? 'Add Team Member' : 'Add Applicant'; 
+     
+    // show the modal
+    this.addSwal.show();
+    // the input may not be there right away, so stall to make sure it is
+    setTimeout(function(){ 
+      document.getElementById("addName").focus();
+      }, 200);
   }
 
 
@@ -87,16 +112,16 @@ export class AppComponent {
   /**
    * Add a new team member or save an existing one
    */
-  saveMember(teamFlag, memberId ? ) {
+  saveMember(teamFlag) {
     // check if we are saving to the team member table or the applicant table
     // later make this one table with a flag?????
     if (teamFlag) {
       // if we are updating an existing member, then delete him since u will create him again
-      if (memberId) {
+      if (this.addId != 'NEW') {
         // Find item index using _.findIndex (thanks @AJ Richardson for comment)
-        var index = _.findIndex(this.team, { id: memberId });
+        var index = _.findIndex(this.team, { id: this.addId });
         // Replace item at index using native splice
-        this.team.splice(index, 1, { id: memberId, name: this.addName, intelligence: this.addIntelligence, strength: this.addStrength, endurance: this.addEndurance, spicyFoodTolerance: this.addSpicyFoodTolerance });
+        this.team.splice(index, 1, { id: this.addId, name: this.addName, intelligence: this.addIntelligence, strength: this.addStrength, endurance: this.addEndurance, spicyFoodTolerance: this.addSpicyFoodTolerance });
       }
       // if no id passed, then generate a new one and create a new entry
       else {
@@ -104,9 +129,9 @@ export class AppComponent {
       }
     } else {
       // if we are updating an existing member, then delete him since u will create him again
-      if (memberId) {
+      if (this.addId != 'NEW') {
         // Find item index using _.findIndex (thanks @AJ Richardson for comment)
-        var index = _.findIndex(this.applicants, { id: memberId });
+        var index = _.findIndex(this.applicants, { id: this.addId });
         // Replace item at index using native splice
         let applicant = { id: this.generateId(), name: this.addName, intelligence: this.addIntelligence, strength: this.addStrength, endurance: this.addEndurance, spicyFoodTolerance: this.addSpicyFoodTolerance, compatibility: '' }
         applicant.compatibility = this.getCompatibility(applicant, this.team)
@@ -121,6 +146,7 @@ export class AppComponent {
     }
 
 
+    // recalculate the comp score every time a save is made
     this.calculateCompatibility();
   }
 
@@ -172,14 +198,14 @@ export class AppComponent {
     } else {
       return (1 - (totalDifference / 40)).toFixed(2);
     }
-
-
   }
 
 
   getAttributeAverage(attribute) {
     let attributeTotal = _.sumBy(this.team, attribute)
     let average = (attributeTotal / this.team.length).toFixed(2);
+
+    // check that u got a number (case where no team members)
     return isNaN(parseFloat(average)) ? '' : average;
   }
 
@@ -191,7 +217,6 @@ export class AppComponent {
   downloadJson() {
     var theJSON = JSON.stringify(this.applicants);
 
-    // var blob = new Blob([jsonContent], { type: 'text/csv' });
     var blob = new Blob([theJSON], { type: 'text/csv' });
     saveAs(blob, "applicants.txt");
   }
