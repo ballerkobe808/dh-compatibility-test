@@ -1,0 +1,33 @@
+{
+  "team": [{
+      "name": "Eddie",
+      "intelligence": 7,
+      "strength": 8,
+      "endurance": 9,
+      "spicyFoodTolerance": 4
+    },
+    {
+      "name": "Will",
+      "intelligence": 9,
+      "strength": 4,
+      "endurance": 8,
+      "spicyFoodTolerance": 4
+    },
+    {
+      "name": "Mike",
+      "intelligence": 9,
+      "strength": 2,
+      "endurance": 7,
+      "spicyFoodTolerance": 7
+    }
+  ],
+  "applicants": [{
+    "name": "Daniel",
+    "intelligence": 10,
+    "strength": 10,
+    "endurance": 10,
+    "spicyFoodTolerance": 10
+
+  }]
+
+}

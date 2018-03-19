@@ -30,14 +30,14 @@ export class AppComponent {
 
   // current team seed data
   team = [
-    { id: '1', name: 'Eddie', intelligence: 7, strength: 8, endurance: 10, spicyFoodTolerance: 3 },
-    { id: '2', name: 'Will', intelligence: 9, strength: 8, endurance: 7, spicyFoodTolerance: 9 },
-    { id: '3', name: 'Mike', intelligence: 9, strength: 5, endurance: 7, spicyFoodTolerance: 5 },
+    // { id: '1', name: 'Eddie', intelligence: 7, strength: 8, endurance: 10, spicyFoodTolerance: 3 },
+    // { id: '2', name: 'Will', intelligence: 9, strength: 8, endurance: 7, spicyFoodTolerance: 9 },
+    // { id: '3', name: 'Mike', intelligence: 9, strength: 5, endurance: 7, spicyFoodTolerance: 5 },
   ]
 
   // current applicants seed data
   applicants = [
-    { id: '4', name: 'Daniel', intelligence: 10, strength: 10, endurance: 10, spicyFoodTolerance: 10, compatibility: '0.72' },
+    // { id: '4', name: 'Daniel', intelligence: 10, strength: 10, endurance: 10, spicyFoodTolerance: 10, compatibility: '0.72' },
   ]
 
 
@@ -55,15 +55,15 @@ export class AppComponent {
     this.addSpicyFoodTolerance = member.spicyFoodTolerance
 
     this.teamFlag = teamFlag;
-    this.modalTitle = (teamFlag) ? 'Edit Team Member' : 'Edit Applicant'; 
+    this.modalTitle = (teamFlag) ? 'Edit Team Member' : 'Edit Applicant';
 
     // show the modal
     this.addSwal.show();
-    
+
     // the input may not be there right away, so stall to make sure it is
-    setTimeout(function(){ 
+    setTimeout(function() {
       document.getElementById("addName").focus();
-      }, 200);
+    }, 200);
   }
 
   /**
@@ -79,14 +79,14 @@ export class AppComponent {
     this.addSpicyFoodTolerance = 5
 
     this.teamFlag = teamFlag;
-    this.modalTitle = (teamFlag) ? 'Add Team Member' : 'Add Applicant'; 
-     
+    this.modalTitle = (teamFlag) ? 'Add Team Member' : 'Add Applicant';
+
     // show the modal
     this.addSwal.show();
     // the input may not be there right away, so stall to make sure it is
-    setTimeout(function(){ 
+    setTimeout(function() {
       document.getElementById("addName").focus();
-      }, 200);
+    }, 200);
   }
 
 
@@ -194,8 +194,12 @@ export class AppComponent {
       Math.abs(member.endurance - endurance) +
       Math.abs(member.spicyFoodTolerance - spicyFoodTolerance);
 
+    // if no team it will be nan
+    if (isNaN(totalDifference)) {
+      return '-';
+    }
     // zero division causes errors
-    if (totalDifference == 0) {
+    else if (totalDifference == 0) {
       return '1.00';
     } else {
       return (1 - (totalDifference / 40)).toFixed(2);
@@ -231,7 +235,7 @@ export class AppComponent {
    */
   onFileChange(event) {
     let reader = new FileReader();
-    if(event.target.files && event.target.files.length > 0) {
+    if (event.target.files && event.target.files.length > 0) {
       let file = event.target.files[0];
 
       reader.readAsText(file);
@@ -243,29 +247,40 @@ export class AppComponent {
 
         try {
           let json = JSON.parse(reader.result);
+          this.invalidFile = false;
+
+          // check for team json and add it here
           if (json.team) {
             let team = json.team;
             // give them unique ids
             for (const member of team) {
               member.id = this.generateId();
             }
-
             this.team = this.team.concat(team);
-            this.invalidFile = false;
           }
-          else {
-            this.invalidFile = true;
+
+          // check for applicant json and add them here
+          if (json.applicants) {
+            let applicants = json.applicants;
+            // give them unique ids
+            for (const member of applicants) {
+              member.id = this.generateId();
+            }
+            this.applicants = this.applicants.concat(applicants);
           }
+
           // clear the file after finishing
           // otherwise if the user picks the same file, nothing happens
           this.fileInput.nativeElement.value = '';
-            
-        }
-        catch (e) {
+
+          // recalculate the comp score every time a file is added
+          this.calculateCompatibility();
+
+        } catch (e) {
           this.invalidFile = true;
-            console.log(e)
+          console.log(e)
         }
-        
+
       };
     }
   }
