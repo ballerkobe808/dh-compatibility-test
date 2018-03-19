@@ -2,14 +2,21 @@
 
   <h1>Datahouse Team Compatibility Checker</h1>
 
+
   <hr>
 
   <!-- Current Team Member Section ------------------------------------------------------ -->
   <h3 style="display: inline-block;">Current Team Members</h3>
 
-  <div (click)="addMember(true); addSwal.show()" class="href" style='margin-left: 100px; display: inline'><i class="fa fa-plus"></i>&nbsp;Add Team Member</div>
+  <div (click)="addMember(true); addSwal.show()" class="href" style='margin-left: 90px; display: inline'><i class="fa fa-plus"></i>&nbsp;Add Team Member</div>
 
-
+  <div style="display: inline; margin-left: 30px;">
+    <label for="file-upload" class="custom-file-upload">
+      Load JSON file
+    </label>
+    <input type="file" id="file-upload" (change)="onFileChange($event)" #fileInput>
+    <div *ngIf="invalidFile" style="color: red; font-size: 12px; margin-left: 580px; margin-top: -8px; margin-bottom: -20px;">Invlaid JSON file Format</div>
+  </div>
 
   <!-- modal to add a new member -->
   <swal #addSwal title="" [showCancelButton]="true" (confirm)="saveMember(teamFlag)">
@@ -53,7 +60,7 @@
           <th>Actions</th>
         </tr>
         <tr *ngFor="let member of team ">
-          <td>
+          <td style="min-width: 150px;">
             {{member.name}}
           </td>
           <td class="text-center">
@@ -70,8 +77,8 @@
           </td>
 
           <td class="text-center">
-            <div style="width: 200px;">
-              <div href="" (click)="editMember(true, member);" class="href" style="margin-right: 20px; display: inline;">
+            <div style="width: 140px;">
+              <div href="" (click)="editMember(true, member);" class="href" style="margin-right: 15px; display: inline;">
                 <i class="fa fa-edit"></i>&nbsp;Edit</div>
 
               <div (click)="delSwal.show()" class="href" style=" display: inline;">
@@ -106,13 +113,16 @@
       </table>
     </div>
   </div>
+
+
+
   <!-- Current Team Member Section End ------------------------------------------------------ -->
 
   <hr>
 
   <!-- Applicant section------------------------------------------------------ -->
   <h3 style="display: inline-block;">Potential Applicants</h3>
-  <div (click)="addMember(false);" class="href" style='margin-left: 100px; display: inline;'><i class="fa fa-plus"></i>&nbsp;Add Applicant</div>
+  <div (click)="addMember(false);" class="href" style='margin-left: 500px; display: inline;'><i class="fa fa-plus"></i>&nbsp;Add Applicant</div>
 
 
   <div class="row">
@@ -128,7 +138,7 @@
           <th>Actions</th>
         </tr>
         <tr *ngFor="let member of applicants ">
-          <td>
+          <td style="min-width: 150px;">
             {{member.name}}
           </td>
           <td class="text-center">
@@ -148,8 +158,8 @@
           </td>
 
           <td class="text-center">
-            <div style="width: 200px;">
-              <div href="" (click)="editMember(false, member);" class="href" style="margin-right: 20px; display: inline;">
+            <div style="width: 140px;">
+              <div href="" (click)="editMember(false, member);" class="href" style="margin-right: 15px; display: inline;">
                 <i class="fa fa-edit"></i>&nbsp;Edit</div>
 
               <div (click)="del2Swal.show()" class="href" style=" display: inline;">

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash';
 import { saveAs } from 'file-saver';
 import { SwalComponent } from '@toverux/ngx-sweetalert2';
@@ -23,8 +23,10 @@ export class AppComponent {
   modalTitle: string = ''
 
   teamFlag: boolean = false;
+  invalidFile: boolean = false;
   jsonLink: string = '';
   @ViewChild('addSwal') addSwal: SwalComponent;
+  @ViewChild('fileInput') fileInput: ElementRef;
 
   // current team seed data
   team = [
@@ -219,5 +221,52 @@ export class AppComponent {
 
     var blob = new Blob([theJSON], { type: 'text/csv' });
     saveAs(blob, "applicants.txt");
+  }
+
+  /**
+   * Load a team using a json file.
+   * This requires a specific format, will add error checking later
+   * 
+   * @param event 
+   */
+  onFileChange(event) {
+    let reader = new FileReader();
+    if(event.target.files && event.target.files.length > 0) {
+      let file = event.target.files[0];
+
+      reader.readAsText(file);
+      reader.onload = () => {
+        console.log(file)
+        console.log(reader.result)
+
+        // try parse the json - if its invalid throw an error
+
+        try {
+          let json = JSON.parse(reader.result);
+          if (json.team) {
+            let team = json.team;
+            // give them unique ids
+            for (const member of team) {
+              member.id = this.generateId();
+            }
+
+            this.team = this.team.concat(team);
+            this.invalidFile = false;
+          }
+          else {
+            this.invalidFile = true;
+          }
+          // clear the file after finishing
+          // otherwise if the user picks the same file, nothing happens
+          this.fileInput.nativeElement.value = '';
+            
+        }
+        catch (e) {
+          this.invalidFile = true;
+            console.log(e)
+        }
+        
+      };
+    }
   }
 }

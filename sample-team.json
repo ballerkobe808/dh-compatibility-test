@@ -1,0 +1,21 @@
+{
+  "team": [
+    {
+    "name": "Jason",
+    "intelligence": 1,
+    "strength": 9,
+    "endurance": 3,
+    "spicyFoodTolerance": 4
+
+  },
+  {
+    "name": "Danny",
+    "intelligence": 4,
+    "strength": 4,
+    "endurance": 4,
+    "spicyFoodTolerance": 4
+
+  }
+
+]
+}
