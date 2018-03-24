@@ -118,7 +118,7 @@ export class AppComponent {
     // check if we are saving to the team member table or the applicant table
     // later make this one table with a flag?????
     if (teamFlag) {
-      // if we are updating an existing member, then delete him since u will create him again
+      // check if we are updating an existing member or adding a new one
       if (this.addId != 'NEW') {
         // Find item index using _.findIndex (thanks @AJ Richardson for comment)
         var index = _.findIndex(this.team, { id: this.addId });
@@ -130,19 +130,19 @@ export class AppComponent {
         this.team.push({ id: this.generateId(), name: this.addName, intelligence: this.addIntelligence, strength: this.addStrength, endurance: this.addEndurance, spicyFoodTolerance: this.addSpicyFoodTolerance })
       }
     } else {
-      // if we are updating an existing member, then delete him since u will create him again
+      // check if we are updating an existing member or adding a new one
       if (this.addId != 'NEW') {
         // Find item index using _.findIndex (thanks @AJ Richardson for comment)
         var index = _.findIndex(this.applicants, { id: this.addId });
         // Replace item at index using native splice
         let applicant = { id: this.generateId(), name: this.addName, intelligence: this.addIntelligence, strength: this.addStrength, endurance: this.addEndurance, spicyFoodTolerance: this.addSpicyFoodTolerance, compatibility: '' }
-        applicant.compatibility = this.getCompatibility(applicant, this.team)
+        // applicant.compatibility = this.getCompatibility(applicant, this.team)
         this.applicants.splice(index, 1, applicant);
       }
       // if no id passed, then generate a new one and create a new entry
       else {
         let applicant = { id: this.generateId(), name: this.addName, intelligence: this.addIntelligence, strength: this.addStrength, endurance: this.addEndurance, spicyFoodTolerance: this.addSpicyFoodTolerance, compatibility: '' }
-        applicant.compatibility = this.getCompatibility(applicant, this.team)
+        // applicant.compatibility = this.getCompatibility(applicant, this.team)
         this.applicants.push(applicant)
       }
     }
