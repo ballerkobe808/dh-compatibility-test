@@ -12,11 +12,8 @@ git clone https://github.com/ballerkobe808/dh-compatibility-test.git
 
 ## Demo
 
-For a demo of the project you can visit: 
+For a demo of the project you can visit here: https://dh-compatibility-test.herokuapp.com/
 
-```bash
-https://dh-compatibility-test.herokuapp.com/
-```
 
 
 
