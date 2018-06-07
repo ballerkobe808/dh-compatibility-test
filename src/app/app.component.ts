@@ -199,11 +199,11 @@ export class AppComponent {
       return '-';
     }
     // zero division causes errors
-    else if (totalDifference == 0) {
-      return '1.00';
-    } else {
+    // else if (totalDifference == 0) {
+    //   return '1.00';
+    // } else {
       return (1 - (totalDifference / 40)).toFixed(2);
-    }
+    // }
   }
 
 
