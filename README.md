@@ -40,7 +40,7 @@ npm install
 After the node modules have been installed, then run:
 
 ```bash
-npm run start
+npm run start:dev
 ```
 
 This will start the development server. Navigate to `http://localhost:4200/` to view the app.
