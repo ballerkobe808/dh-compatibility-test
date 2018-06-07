@@ -10,6 +10,16 @@ git clone https://github.com/ballerkobe808/dh-compatibility-test.git
 ```
 
 
+## Demo
+
+For a demo of the project you can visit: 
+
+```bash
+https://dh-compatibility-test.herokuapp.com/
+```
+
+
+
 ## Install the angular-cli
 
 This project requires the Angular CLI to run locally. Install it globally using:
